@@ -3,11 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="noindex, nofollow">
-    <meta name="description" content="钟同学｜人工智能与大模型应用方向，前端开发个人作品集主页">
-    <title>钟家怡 | 个人作品集</title>
+    <!-- 简历/作品集希望被搜索到，所以用 index,follow；不希望被收录就改回 noindex,nofollow -->
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="钟家怡｜广东科学技术职业学院人工智能技术应用专业 2025 级，前端开发 / 大模型应用开发方向，掌握 HTML5 / CSS3 / JavaScript、Git 与 GitHub Actions CI/CD 自动化部署。">
+    <title>钟家怡｜前端开发 · 大模型应用开发 | 个人简历</title>
+
+    <!-- 分享到微信 / 招聘平台时显示的卡片信息 -->
+    <meta property="og:type" content="profile">
+    <meta property="og:title" content="钟家怡｜前端开发 · 大模型应用开发 | 个人简历">
+    <meta property="og:description" content="2025 级人工智能技术应用在读，能独立完成响应式页面开发与 CI/CD 自动部署。">
+    <meta property="og:url" content="https://zzb-ctrl.github.io/zhongjiayi20260928_Resume_CICD_DMX/">
+    <meta property="og:image" content="https://zzb-ctrl.github.io/zhongjiayi20260928_Resume_CICD_DMX/assets/work-blog.png">
+
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-    <!-- 样式与脚本请勿修改；业务内容维护在HTML正文 / works‑data.js -->
+    <!-- 样式与脚本请勿修改；业务内容维护在 HTML 正文 / works-data.js -->
     <link rel="stylesheet" href="styles.css">
     <script src="works-data.js" defer></script>
     <script src="works-render.js" defer></script>
@@ -17,21 +26,21 @@
     <!-- 无障碍跳转，禁止删除 -->
     <a class="skip-link" href="#main">跳到正文</a>
 
-    <!-- 阅读进度条，app.js依赖id，禁止删除 -->
+    <!-- 阅读进度条，app.js 依赖 id，禁止删除 -->
     <div class="reading-progress" id="reading-progress"></div>
 
-    <!-- ==========【导航维护区】修改导航文字/锚点 ========== -->
+    <!-- ==========【导航维护区】修改导航文字 / 锚点 ========== -->
     <header class="site-header">
         <div class="container header-inner">
-            <a class="brand" href="#about">zzb的主页</a>
+            <a class="brand" href="#about">钟家怡 · 个人简历</a>
             <nav aria-label="主导航">
                 <a href="#about">关于我</a>
+                <a href="#objective">求职意向</a>
                 <a href="#experience">教育经历</a>
                 <a href="#projects">项目经历</a>
                 <a href="#skills">专业技能</a>
                 <a href="#portfolio">作品展示</a>
-                <a href="#practice">学习实践</a>
-                <a href="#records">学习记录</a>
+                <a href="#records">实践与成长</a>
             </nav>
         </div>
     </header>
@@ -42,93 +51,158 @@
             <div class="container">
                 <div class="hero-top">
                     <div class="hero-copy">
-                        <h1>钟家怡 <span>zzb</span></h1>
-                        <p class="hero-role">人工智能方向｜前端开发学习者</p>
-                        <p class="hero-school">广东科学技术职业学院 · 25大模型应用开发</p>
+                        <h1>钟家怡</h1>
+                        <p class="hero-role">前端开发 / 大模型应用开发方向</p>
+                        <p class="hero-school">广东科学技术职业学院 · 人工智能技术应用（大模型应用开发方向）2025 级</p>
                     </div>
                     <div class="hero-visual">
                         <figure>
-                            <!--更换头像只修改src，保留alt属性-->
-                            <img src="assets/avatar.svg" alt="个人头像" width="220" height="220">
+                            <!-- 换成真人职业照：把照片存为 assets/avatar.jpg，再把下面的 src 改掉 -->
+                            <img src="assets/avatar.svg" alt="钟家怡的个人头像" width="220" height="220">
                         </figure>
                     </div>
                 </div>
 
                 <div class="research-direction" id="research-direction">
-                    <span class="eyebrow">学习方向</span>
-                    <p>前端网页开发,掌握HTML/CSS/JS基础;学习Git版本控制、GitHub Actions CI/CD自动部署,同步学习大模型应用开发。</p>
+                    <span class="eyebrow">个人概述</span>
+                    <p>
+                        2025 级人工智能技术应用专业在读，能独立完成
+                        <strong>HTML5 / CSS3 / JavaScript</strong> 响应式页面开发；
+                        熟悉 <strong>Git</strong> 版本管理，能用 <strong>GitHub Actions</strong> 搭建 CI/CD 流水线，
+                        把代码从本地一路自动部署到线上；同时具备大模型 API 调用与提示词工程的基础实践能力。
+                        目标是成为一名能独立交付的初级前端开发工程师。
+                    </p>
                 </div>
 
                 <div class="profile-details">
                     <div>
-                        <span>学习阶段</span>
-                        <p>专科在读</p>
+                        <span>求职意向</span>
+                        <p>前端开发 / 大模型应用开发 实习生</p>
                     </div>
                     <div>
-                        <span>所在城市</span>
-                        <p>广东·珠海</p>
+                        <span>期望城市</span>
+                        <p>珠海 · 广州 · 深圳</p>
                     </div>
                     <div>
+                        <!-- TODO 替换：这里必须换成你的真实邮箱，现在还是占位符 -->
                         <span>公开邮箱</span>
-                        <p>123456@qq.com</p>
+                        <p>请替换为你的真实邮箱</p>
                     </div>
                     <div>
-                        <span>院校</span>
-                        <p>广东科学技术职业学院</p>
+                        <span>GitHub</span>
+                        <p><a href="https://github.com/zzb-ctrl" target="_blank" rel="noopener noreferrer">github.com/zzb-ctrl</a></p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ==========【教育经历】新增条目复制 experience‑item 模板 ========== -->
+        <!-- ==========【求职意向】新增板块 ========== -->
+        <section class="section" id="objective">
+            <div class="container">
+                <header class="section-heading">
+                    <h2>求职意向</h2>
+                </header>
+                <div class="section-content">
+                    <ul class="skills-list">
+                        <li>
+                            <strong>目标岗位</strong>
+                            前端开发实习生 / 大模型应用开发实习生
+                        </li>
+                        <li>
+                            <strong>期望城市</strong>
+                            珠海 · 广州 · 深圳
+                        </li>
+                        <li>
+                            <strong>可实习时间</strong>
+                            寒暑假可全勤；学期内每周可到岗 3 天以上
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========【教育经历】新增条目复制 experience-item 模板 ========== -->
         <section class="section" id="experience">
             <div class="container">
                 <header class="section-heading">
                     <h2>教育经历</h2>
                 </header>
                 <div class="section-content">
-                    <!--
                     <div class="experience-item">
                         <p class="experience-heading">
-                            <strong>学校名称 · 专业</strong>
-                            <time>时间段</time>
+                            <strong>广东科学技术职业学院 · 人工智能技术应用（大模型应用开发方向）</strong>
+                            <time>2025.09 – 至今（预计 2028.06 毕业）</time>
                         </p>
-                        <p class="experience-detail">在校学习内容描述</p>
-                    </div>
-                    -->
-                    <div class="experience-item">
-                        <p class="experience-heading">
-                            <strong>广东科学技术职业学院 · 大模型应用开发</strong>
-                            <time>2025-至今 在读</time>
+                        <p class="experience-detail">
+                            在读期间系统学习 Web 前端开发、JavaScript 程序设计、数据库技术与大模型应用开发。
+                            能独立完成 HTML5 语义化页面搭建与 CSS3 响应式布局；使用 Git 管理全部个人项目版本，
+                            并通过 GitHub Actions 实现自动构建与部署；掌握大模型 API 基础调用与提示词工程方法。
                         </p>
-                        <p class="experience-detail">学习Web前端开发、大模型调用、数据库基础；使用Git+CI/CD管理个人项目，积累工程实践经验。</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ==========【项目经历】新增条目复制 research‑item 模板 ========== -->
+        <!-- ==========【项目经历】新增条目复制 research-item 模板 ========== -->
         <section class="section" id="projects">
             <div class="container">
                 <header class="section-heading">
                     <h2>项目经历</h2>
                 </header>
                 <div class="section-content">
-                    <!--
                     <article class="research-item">
-                        <h3><time>时间/类型</time>项目名称</h3>
-                        <p>项目描述、技术栈、完成工作</p>
+                        <h3><time>2026.09 – 至今</time>个人简历 / 作品集网站（独立开发）</h3>
+                        <p>
+                            <strong>技术栈：</strong>HTML5 / CSS3 / 原生 JavaScript / Git / GitHub Actions / GitHub Pages
+                        </p>
+                        <p>
+                            <strong>我做了什么：</strong>0 → 1 独立搭建并上线个人作品集站点。采用「数据与视图分离」架构，
+                            作品列表统一维护在 works-data.js，新增作品无需改动任何 HTML；用原生 JavaScript 实现导航滚动高亮、
+                            阅读进度条、回到顶部、作品标签筛选与年份排序；配置 GitHub Actions 流水线，代码 push 后自动构建
+                            并部署到 GitHub Pages，全程无需手动上传。
+                        </p>
+                        <p>
+                            <strong>链接：</strong>
+                            <a href="https://zzb-ctrl.github.io/zhongjiayi20260928_Resume_CICD_DMX/" target="_blank" rel="noopener noreferrer">线上站点</a>
+                            ·
+                            <a href="https://github.com/zzb-ctrl" target="_blank" rel="noopener noreferrer">源码仓库</a>
+                        </p>
                     </article>
-                    -->
+
+                    <!-- TODO 核对：下面两条里的“我做了什么”请按你的真实完成情况改写。
+                         如果作品基于课程脚手架，请如实写明“基于课程脚手架完成 XX 功能”，这样更可信。 -->
                     <article class="research-item">
-                        <h3><time>课程项目</time>个人作品集主页</h3>
-                        <p>HTML语义化页面搭建,分离数据与视图.使用GitHub Actions完成CI/CD持续部署;实现导航、滚动进度、回到顶部、作品筛选排序完整交互。</p>
+                        <h3><time>2026</time>长风成卷 · 博客应用</h3>
+                        <p>
+                            <strong>技术栈：</strong>HTML / CSS / JavaScript / 后端接口 / 数据库
+                        </p>
+                        <p>
+                            <strong>我做了什么：</strong>实现文章列表与详情展示，打通前后端接口完成数据读写，作品已部署上线。
+                        </p>
+                        <p>
+                            <strong>链接：</strong>
+                            <a href="https://ffd-p2-blog.netlify.app/" target="_blank" rel="noopener noreferrer">在线访问</a>
+                        </p>
+                    </article>
+
+                    <article class="research-item">
+                        <h3><time>2026</time>群像云图 · 社区应用</h3>
+                        <p>
+                            <strong>技术栈：</strong>HTML / CSS / JavaScript / 数据库 / 线上部署
+                        </p>
+                        <p>
+                            <strong>我做了什么：</strong>完成内容发布与社区互动模块，实现数据的持久化存储与页面渲染，作品已部署上线。
+                        </p>
+                        <p>
+                            <strong>链接：</strong>
+                            <a href="https://ffd-p3-community.netlify.app/" target="_blank" rel="noopener noreferrer">在线访问</a>
+                        </p>
                     </article>
                 </div>
             </div>
         </section>
 
-        <!-- ==========【专业技能】新增技能复制 li ========== -->
+        <!-- ==========【专业技能】新增技能复制 li；本区为 3 列栅格，建议保持 3 条 ========== -->
         <section class="section" id="skills">
             <div class="container">
                 <header class="section-heading">
@@ -136,61 +210,65 @@
                 </header>
                 <div class="section-content">
                     <ul class="skills-list">
-                        <li><strong>前端基础</strong> HTML5语义标签、CSS3、Flex响应式布局，掌握基础JS交互。</li>
-                        <li><strong>工程工具</strong> Git版本管理、GitHub Actions CI/CD自动化网站部署。</li>
-                        <li><strong>其他方向</strong> 大模型API基础调用，简单Prompt工程实践。</li>
+                        <li>
+                            <strong>前端开发</strong>
+                            HTML5 语义化标签、CSS3 与 Flex 响应式布局；能独立实现导航高亮、滚动进度、列表筛选排序等常规交互；
+                            熟悉 DOM 操作与事件处理。
+                        </li>
+                        <li>
+                            <strong>工程与自动化部署</strong>
+                            熟练使用 Git 进行提交与版本管理；能编写 GitHub Actions 工作流，
+                            实现代码推送后自动构建并部署到 GitHub Pages。
+                        </li>
+                        <li>
+                            <strong>大模型应用</strong>
+                            了解主流大模型 API 调用方式与提示词工程基本方法，
+                            能完成简单对话与工具调用场景的实践。
+                        </li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <!-- ==========【作品展示】全部由 works‑data.js + works‑render.js 动态渲染 ========== -->
+        <!-- ==========【作品展示】全部由 works-data.js + works-render.js 动态渲染 ========== -->
         <section class="section" id="portfolio">
             <div class="container">
                 <header class="section-heading">
                     <h2>作品展示</h2>
-                    <p class="works-notice">作品统一在 works-data.js 维护,推送代码后CI/CD自动更新页面。</p>
+                    <p class="works-notice">
+                        以下为本人在课程学习中完成的实践作品，点击卡片可访问线上效果；
+                        作品数据统一维护在 works-data.js，推送代码后由 CI/CD 自动更新本页。
+                    </p>
                 </header>
                 <div class="works-toolbar">
                     <div class="works-tags" id="works-tags"></div>
                     <button class="works-sort" id="works-sort" type="button">按年份：新→旧</button>
                 </div>
-                <!-- ⚠️不要在这里手写li卡片！JS自动渲染到此容器；id/class禁止删除 -->
+                <!-- ⚠️ 不要在这里手写 li 卡片！JS 自动渲染到此容器；id / class 禁止删除 -->
                 <ol class="portfolio-list" id="portfolio-list"></ol>
             </div>
         </section>
 
-        <!-- ==========【学习实践】 ========== -->
-        <section class="section" id="practice">
-            <div class="container">
-                <header class="section-heading">
-                    <h2>学习实践</h2>
-                </header>
-                <div class="section-content">
-                    <div class="teaching-group">
-                        <h3>本学期学习目标</h3>
-                        <ol>
-                            <li>每节课完成可运行的网页功能改动。</li>
-                            <li>能够读懂、解释自己编写的HTML、CSS、JS代码。</li>
-                            <li>熟练使用Git管理版本，借助CI/CD完成网站发布上线。</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========【学习记录】新增记录复制 li ========== -->
+        <!-- ==========【实践与成长】原「学习实践」+「学习记录」合并 ========== -->
         <section class="section" id="records">
             <div class="container">
                 <header class="section-heading">
-                    <h2>学习记录</h2>
+                    <h2>实践与成长</h2>
                 </header>
                 <div class="section-content">
                     <div class="publication-group">
-                        <h3>成长记录</h3>
+                        <h3>已完成</h3>
                         <ol class="references">
-                            <li>完成第一个个人主页项目，掌握CI/CD自动化部署完整流程。</li>
-                            <li>后续在此补充课程作业、竞赛、项目成果记录。</li>
+                            <li>独立完成个人作品集网站，跑通 <strong>Git → GitHub Actions → GitHub Pages</strong> 的 CI/CD 自动部署完整流程。</li>
+                            <li>「长风成卷」博客应用已部署上线，完成前后端接口与数据库的连通。</li>
+                            <li>持续补充：课程作业、竞赛成果、项目实践记录。</li>
+                        </ol>
+                    </div>
+                    <div class="publication-group">
+                        <h3>获奖与证书</h3>
+                        <ol class="references">
+                            <!-- TODO 填写：有就写，没有就暂时保留这行提示 -->
+                            <li>待补充：技能竞赛获奖、职业资格证书、语言等级考试等。</li>
                         </ol>
                     </div>
                 </div>
@@ -198,7 +276,7 @@
         </section>
     </main>
 
-    <!-- JS交互DOM节点，id不可删除，app.js依赖 -->
+    <!-- JS 交互 DOM 节点，id 不可删除，app.js 依赖 -->
     <p aria-live="polite" class="section-indicator" id="section-indicator"></p>
     <button aria-label="返回页面顶部" class="to-top" id="to-top" type="button">↑</button>
 
@@ -211,5 +289,3 @@
     </footer>
 </body>
 </html>
-
-
