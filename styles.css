@@ -1,4 +1,24 @@
-/* 1. 中文用本地思源宋体，英文优先 Times New Roman。 */
+/* ============================================================
+   钟家怡 · 个人简历 — 视觉设计
+   ------------------------------------------------------------
+   设计语言：深色首屏 + 留白正文 + 单一强调色（薄荷绿）
+   三根支柱：
+     1. 深色首屏形成第一印象，资料卡骑在首屏下沿（记忆点）
+     2. 正文回归白色、无边框线，靠留白和字重分层（简洁）
+     3. 章节用 01/02 编号 + 延伸细线，形成编辑感（秩序）
+
+   ⚠️ 改样式前先读这一段 —— 以下钩子被 JS 依赖，禁止改名或删除：
+     #reading-progress  #section-indicator  #to-top
+     #works-tags  #works-sort  .portfolio-list
+     nav a   main .hero[id]   main section[id]
+     .is-current（导航高亮）  .is-visible（进场动画）
+     works-render.js 生成：.work-card .work-year .work-cover .work-copy .works-empty
+
+   ✅ 内容增删不会错版：
+     .profile-details 和 .skills-list 用 auto-fit，条目数变了自动重排。
+   ============================================================ */
+
+/* 1. 中文衬线字体，只用在姓名上 —— 大字衬线是这套设计的记忆点 */
 @font-face {
   font-family: "Resume Serif SC";
   src: url("assets/noto-serif-sc-400.woff2") format("woff2");
@@ -13,349 +33,652 @@
   font-weight: 600 900;
   font-display: swap;
 }
+
 :root {
-  /* 配色层级：墨绿主标题、古铜次标题、深灰正文、香槟色细线。 */
-  --text: #343c38;
-  --muted: #6d746d;
-  --accent: #42635b;
-  --heading: #254a40;
-  --subheading: #7c6348;
-  --gold: #b8a27d;
-  --heading-wash: #edf1ea;
-  --body-size: 19px;
-  --title-size: 32px;
-  --line: #e1ddd3;
-  --background: #fbfaf6;
+  /* 色板只有三条色阶：墨黑 / 薄荷绿 / 中性灰。不引入第四种颜色。 */
+  --ink: #0e1b19;          /* 首屏与页脚底色、主标题 */
+  --ink-2: #16302b;
+  --paper: #ffffff;
+  --paper-2: #f5f7f5;      /* 浅色分区底 */
+  --paper-3: #eceee9;      /* 图片占位底 */
+  --line: #e4e9e4;         /* 细线 */
+  --line-2: #d2dad3;
+
+  --text: #22322e;         /* 正文 */
+  --muted: #6c7c77;        /* 次要文字 */
+  --faint: #98a5a0;        /* 标签文字 */
+
+  --mint: #19c08a;         /* 深色底上的强调色 */
+  --mint-deep: #0b6b4f;    /* 浅色底上的强调色（保证对比度） */
+  --mint-wash: #e8f6f0;
+
+  --body: 17px;
+  --h2: 29px;
+  --h1: clamp(46px, 7.2vw, 86px);
+
+  --radius: 14px;
+  --radius-lg: 20px;
+
+  /* 正文与标题用系统无衬线，数字与标签用等宽 —— 等宽数字是"工程感"的来源 */
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei",
+          "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+  --serif: "Resume Serif SC", "Noto Serif SC", "Songti SC", serif;
+  --mono: "JetBrains Mono", "Cascadia Mono", Consolas, "SF Mono", ui-monospace, monospace;
 }
+
 * { box-sizing: border-box; }
-html { scroll-padding-top: 94px; scroll-behavior: smooth; }
+html { scroll-padding-top: 84px; }
 body {
   margin: 0;
   color: var(--text);
-  background: var(--background);
-  font: var(--body-size)/1.9 "Times New Roman", "Resume Serif SC", "Noto Serif SC", "Songti SC", SimSun, serif;
+  background: var(--paper);
+  font: var(--body)/1.8 var(--sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-a { color: var(--accent); text-decoration: none; transition: color .2s ease; }
-a:hover { text-decoration: underline; text-underline-offset: 5px; }
-a:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+
+a { color: var(--mint-deep); text-decoration: none; transition: color .18s ease; }
+a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+a:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; border-radius: 3px; }
 h1, h2, h3, p, figure { margin: 0; }
-h1, h2, h3 { line-height: 1.5; }
-h2 { font-size: var(--title-size); font-weight: 600; color: var(--heading); }
-h3 { font-size: 22px; font-weight: 600; color: var(--subheading); }
-::selection { background: #e3e8db; }
-.container { width: min(1200px, calc(100% - 96px)); margin-inline: auto; }
-.skip-link { position: fixed; top: -100px; left: 16px; z-index: 30; padding: 10px; background: white; }
-.skip-link:focus { top: 12px; }
+h1, h2, h3 { line-height: 1.35; letter-spacing: -0.01em; }
+strong { font-weight: 600; }
+::selection { background: var(--mint-wash); color: var(--ink); }
 
-/* 2. 顶部只保留姓名和普通锚点导航。 */
-.site-header { position: sticky; top: 0; z-index: 10; background: #fbfaf6f5; backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
-.header-inner { display: flex; justify-content: space-between; align-items: center; gap: 30px; min-height: 70px; }
-.brand { font-size: 24px; font-weight: 600; color: var(--text); white-space: nowrap; }
-.brand span { font-size: 14px; font-weight: 400; letter-spacing: 1px; margin-left: 12px; color: var(--muted); }
-nav { display: flex; gap: 28px; }
-nav a { color: var(--muted); font-size: 17px; }
-nav a:hover { color: var(--accent); }
-/* JavaScript 只切换类名；选中时的外观仍由 CSS 负责。 */
-nav a.is-current { color: var(--heading); font-weight: 600; text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 2px; text-underline-offset: 7px; }
+.container { width: min(1120px, 100% - 72px); margin-inline: auto; }
+.skip-link { position: fixed; top: -100px; left: 16px; z-index: 60; padding: 10px 16px; background: var(--ink); color: #fff; border-radius: 0 0 8px 8px; }
+.skip-link:focus { top: 0; }
 
-/* 3. 个人介绍：文字和照片并排，基本资料全部展开。 */
-.hero { padding: 44px 0 32px; }
-.hero-top { display: flex; justify-content: space-between; align-items: center; gap: 32px; }
-h1 { font-size: 50px; font-weight: 600; color: var(--heading); letter-spacing: 2px; margin-bottom: 16px; }
-h1 span { font-size: 32px; font-weight: 400; letter-spacing: 0; color: var(--subheading); margin-left: 20px; }
-.hero-role { margin-bottom: 12px; font-size: 20px; }
-.hero-school { color: var(--muted); font-size: 18px; }
+
+/* ------------------------------------------------------------
+   2. 顶栏：细长、白底、胶囊导航
+   ------------------------------------------------------------ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(255, 255, 255, .88);
+  backdrop-filter: blur(14px) saturate(1.5);
+  -webkit-backdrop-filter: blur(14px) saturate(1.5);
+  border-bottom: 1px solid var(--line);
+}
+.header-inner { display: flex; justify-content: space-between; align-items: center; gap: 20px; min-height: 64px; }
+.brand { font-family: var(--serif); font-size: 19px; font-weight: 600; color: var(--ink); white-space: nowrap; letter-spacing: .02em; }
+nav { display: flex; flex-wrap: wrap; gap: 2px; }
+nav a { padding: 7px 13px; border-radius: 999px; color: var(--muted); font-size: 14.5px; transition: color .18s, background .18s; }
+nav a:hover { color: var(--ink); background: var(--paper-2); text-decoration: none; }
+/* JS 只切换类名，选中外观由这里决定 */
+nav a.is-current { color: var(--mint-deep); background: var(--mint-wash); font-weight: 600; text-decoration: none; }
+
+
+/* ------------------------------------------------------------
+   3. 首屏：深色块。背景用 background-image 绘制，
+      这样资料卡可以用负外边距"骑"在首屏下沿而不被裁掉。
+      （如果用 overflow:hidden 裁剪装饰，卡片就会被切掉一截）
+   ------------------------------------------------------------ */
+.hero {
+  position: relative;
+  color: #fff;
+  padding: 76px 0 0;
+  background-color: var(--ink);
+  background-image:
+    radial-gradient(circle at 86% 4%, rgba(25, 192, 138, .17), transparent 44%),
+    linear-gradient(rgba(255, 255, 255, .032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .032) 1px, transparent 1px);
+  background-size: 100% 100%, 68px 68px, 68px 68px;
+}
+
+.hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 48px; }
+.hero-copy { min-width: 0; }
+h1 { font-family: var(--serif); font-size: var(--h1); font-weight: 600; line-height: 1.05; letter-spacing: .05em; color: #fff; }
+.hero-role { display: flex; align-items: center; gap: 14px; margin-top: 22px; font-size: 18px; font-weight: 600; color: var(--mint); letter-spacing: .02em; }
+.hero-role::before { content: ''; flex: 0 0 30px; width: 30px; height: 2px; background: var(--mint); }
+.hero-school { margin-top: 12px; color: rgba(255, 255, 255, .6); font-size: 15px; line-height: 1.7; }
+
 .hero-visual { flex-shrink: 0; }
-.hero-visual figure { padding: 9px; border: 1px solid #d8ceb9; background: #fffefa; box-shadow: 0 12px 32px #3444390b; }
-.hero-visual img { display: block; width: 220px; height: 220px; object-fit: cover; }
-.research-direction { margin-top: 30px; }
-.research-direction > span { font-size: 20px; font-weight: 600; color: var(--subheading); }
-.research-direction p { margin-top: 8px; font-size: var(--body-size); }
-.research-direction strong { font-weight: 600; color: var(--heading); }
-.profile-details { display: grid; grid-template-columns: 1fr 1.15fr 1.1fr 1.4fr; gap: 28px; margin-top: 22px; }
-.profile-details > div > span { color: var(--subheading); font-size: 15px; }
-.profile-details p { margin-top: 7px; font-size: 16px; }
+/* 双层圆环：内层细白边 + 外层薄荷色描边，把头像变成一枚"徽章" */
+.hero-visual figure {
+  width: 196px;
+  height: 196px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .18);
+  outline: 1px solid rgba(25, 192, 138, .38);
+  outline-offset: 9px;
+  background: var(--ink-2);
+}
+.hero-visual img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+.research-direction { margin-top: 46px; max-width: 850px; }
+.research-direction > span,
+.research-direction .eyebrow {
+  display: block;
+  margin-bottom: 14px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .18em;
+  color: var(--mint);
+}
+.research-direction p { font-size: 17px; line-height: 1.9; color: rgba(255, 255, 255, .76); }
+.research-direction strong { font-weight: 600; color: #fff; }
+
+/* 资料卡：白底、圆角、悬浮阴影，用负下边距压住首屏下沿 */
+.profile-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 20px 22px;
+  margin-top: 54px;
+  margin-bottom: -62px;
+  padding: 28px 30px;
+  position: relative;
+  z-index: 2;
+  background: var(--paper);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 30px 64px -22px rgba(14, 27, 25, .42), 0 2px 10px rgba(14, 27, 25, .06);
+}
+/* 每条上方一根细线 —— 比竖线分隔更抗换行，条目数变了也不会错位 */
+.profile-details > div { padding-top: 15px; border-top: 1px solid var(--line); }
+.profile-details > div > span { display: block; margin-bottom: 7px; font-family: var(--mono); font-size: 11.5px; letter-spacing: .12em; color: var(--faint); }
+.profile-details p { font-size: 15px; font-weight: 500; line-height: 1.6; color: var(--ink); }
 .profile-details a { overflow-wrap: anywhere; }
 .birth-date { white-space: nowrap; }
 
-/* 4. 正文平铺：主栏目保留浅底，科研子项目用纯文字、字重和间距分层。 */
-.section { border-top: 1px solid var(--line); padding: 42px 0 46px; }
-.section-heading { margin-bottom: 26px; }
-.section-heading h2 { display: inline-block; padding: 6px 20px 8px; border-left: 3px solid var(--gold); background: var(--heading-wash); border-radius: 0 4px 4px 0; }
-.experience-item { margin-bottom: 26px; }
-.experience-item:last-child { margin-bottom: 0; }
-.experience-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; }
-.experience-heading strong { font-size: var(--body-size); font-weight: 600; color: #465951; }
-.experience-heading time { flex-shrink: 0; color: var(--muted); font-size: 16px; font-variant-numeric: tabular-nums; }
-.experience-detail { margin-top: 8px; color: var(--text); font-size: var(--body-size); }
-.research-item { margin-bottom: 28px; }
-.research-item:last-child { margin-bottom: 0; }
-.research-item h3 { font-size: 20px; line-height: 1.9; }
-.research-item time { font-size: 16px; font-weight: 400; color: var(--muted); margin-right: 16px; }
-.research-item p { font-size: var(--body-size); margin-top: 8px; line-height: 1.95; }
-.skills-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-.skills-list li { font-size: var(--body-size); }
-.skills-list strong { display: block; margin-bottom: 8px; font-weight: 600; color: var(--subheading); }
-.skills-list li { padding-top: 15px; border-top: 1px solid #c8baa2; }
-/* 作品图像是实际网站截图。Grid 管布局，CSS 过渡负责轻微悬停效果。 */
-#portfolio { background: #f4f2eb; }
-.portfolio-list { padding: 0; margin: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; }
-.work-card { min-width: 0; }
-.work-card > a { display: block; height: 100%; border: 1px solid #ddd8cb; border-radius: 6px; overflow: hidden; background: #fffdf8; transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease; }
-.work-card > a:hover { text-decoration: none; transform: translateY(-4px); border-color: #b7a88d; box-shadow: 0 14px 30px #34433810; }
-.work-card > a:focus-visible { outline-offset: 5px; }
-.work-cover { background: #e5e0d1; padding: 24px; overflow: hidden; }
-.work-community .work-cover { background: #dbe5dc; }
-.work-greeting-card .work-cover { background: #ece0d9; }
-.work-music-station .work-cover { background: #dfe3e7; }
-.work-cover img { display: block; width: 100%; height: auto; aspect-ratio: 1.65; object-fit: cover; object-position: top; border: 1px solid #ffffffb3; border-radius: 3px; box-shadow: 0 8px 20px #2b393614; transition: transform .4s ease; }
-.work-card > a:hover img { transform: scale(1.018); }
-.work-copy { position: relative; padding: 19px 26px 22px; }
-.work-copy h3 { color: var(--heading); font-size: 22px; padding-right: 28px; }
-.work-copy p { margin-top: 8px; font-size: 17px; color: var(--muted); }
-.work-copy:after { content: '↗'; position: absolute; top: 20px; right: 25px; color: var(--subheading); font-size: 24px; }
-.teaching-group { margin-bottom: 26px; scroll-margin-top: 94px; }
-.teaching-group:last-child { margin-bottom: 0; }
-.teaching-group h3 { margin-bottom: 16px; padding-bottom: 9px; border-bottom: 1px solid #e4ded2; }
-.teaching-group ol { margin: 0; padding-left: 25px; }
-.teaching-group li { padding-left: 7px; margin-bottom: 10px; font-size: var(--body-size); }
-.teaching-group li::marker { color: var(--muted); font-size: 16px; }
-.publication-group { margin-bottom: 28px; }
-.publication-group:last-child { margin-bottom: 0; }
-.publication-group h3 { margin-bottom: 16px; padding-bottom: 9px; border-bottom: 1px solid #e4ded2; }
-.references { margin: 0; padding-left: 25px; }
-.references li { padding-left: 7px; margin-bottom: 17px; font-size: var(--body-size); line-height: 1.9; overflow-wrap: anywhere; }
-.references li::marker { color: var(--muted); font-size: 16px; }
-.references strong { font-weight: 600; color: var(--heading); }
-footer { border-top: 1px solid var(--line); padding: 25px 0; }
-.footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 25px; }
-.footer-name { font-size: 20px; }
-.footer-name > span { font-size: 17px; margin-left: 8px; color: var(--muted); }
-.footer-inner a { font-size: 16px; }
-.back-top { white-space: nowrap; }
 
-/* 5. 手机只调整布局，所有正文依旧直接可见。 */
-@media (max-width: 1000px) {
-  .container { width: calc(100% - 64px); }
-  nav { gap: 20px; }
-  .profile-details { grid-template-columns: repeat(2, 1fr); gap: 16px 30px; }
-  .experience-heading { display: block; }
-  .experience-heading time { display: block; margin-top: 4px; }
-  .work-cover { padding: 18px; }
-  .work-copy { padding: 18px; }
-  .work-copy h3 { font-size: 20px; }
-}
-@media (max-width: 640px) {
-  :root { --body-size: 18px; --title-size: 27px; }
-  html { scroll-padding-top: 110px; }
-  .container { width: calc(100% - 40px); }
-  .header-inner { display: block; min-height: 90px; padding: 10px 0; }
-  .brand { font-size: 21px; }
-  nav { justify-content: space-between; gap: 12px; margin-top: 6px; }
-  nav a { font-size: 14px; }
-  .hero { padding: 28px 0; }
-  .hero-top { display: block; position: relative; }
-  h1 { font-size: 38px; line-height: 1.3; margin-bottom: 18px; padding-right: 166px; min-height: 160px; }
-  h1 span { display: block; font-size: 25px; margin: 8px 0 0; }
-  .hero-role { font-size: 17px; margin-bottom: 12px; }
-  .hero-school { font-size: 16px; }
-  .hero-visual img { width: 140px; height: 140px; }
-  .hero-visual figure { padding: 6px; }
-  .hero-visual { position: absolute; top: 0; right: 0; }
-  .research-direction { margin-top: 23px; }
-  .research-direction p { font-size: var(--body-size); }
-  .profile-details { gap: 14px 20px; }
-  .profile-details p { font-size: 15px; }
-  .profile-details > div > span { font-size: 14px; }
-  .section { padding: 26px 0 28px; }
-  .section-heading { margin-bottom: 18px; }
-  .section-heading h2 { padding: 5px 14px 7px; }
-  h2 { font-size: var(--title-size); }
-  h3 { font-size: 20px; }
-  .experience-heading strong { font-size: 18px; }
-  .experience-detail { font-size: var(--body-size); }
-  .research-item h3 { font-size: 18px; }
-  .research-item time { display: block; margin-right: 0; }
-  .research-item p { font-size: var(--body-size); }
-  .skills-list { grid-template-columns: 1fr; gap: 14px; }
-  .skills-list strong { margin-bottom: 2px; }
-  .portfolio-list { grid-template-columns: 1fr; gap: 22px; }
-  .work-cover { padding: 18px; }
-  .work-copy { padding: 16px 18px 19px; }
-  .work-copy h3 { font-size: 20px; }
-  .work-copy p { font-size: 16px; }
-  .teaching-group { scroll-margin-top: 110px; }
-  .skills-list li, .portfolio-list li, .teaching-group li, .references li { font-size: var(--body-size); }
-  .footer-inner { display: block; }
-  .footer-inner > div { margin-bottom: 16px; }
-}
-/* 尊重减少动态效果设置：保留阅读、键盘操作，关闭滚动和悬停动画。 */
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *:before, *:after { transition: none !important; animation: none !important; }
-  .work-card > a:hover, .work-card > a:hover img { transform: none; }
-}
-@media print {
-  .site-header, .skip-link, .back-top { display: none; }
-  .container { width: 100%; }
-  .hero { padding-top: 0; }
-  .section { padding: 20px 0; }
-  .research-item, .experience-item, .references li { break-inside: avoid; }
-  a { color: inherit; }
-  .section-heading h2, .research-item h3 { background: none; border: 0; padding-inline: 0; }
-  #portfolio { background: none; }
-  .work-card { break-inside: avoid; }
-  .work-cover { padding: 8px; }
-  .work-card > a, .hero-visual figure { box-shadow: none; }
-}
-
-.works-notice { font-size: 15px; color: var(--muted); margin-top: 10px; }
-
-/* ---------- 第 4 课新增：四处由 JavaScript 控制的视觉效果 ---------- */
-
-/* 当前栏目指示器。固定在右下角，内容由 JS 写进去。
-   默认 opacity:0 —— 没写 JS 时它存在但看不见，一写就会浮现。 */
-.section-indicator {
-  position: fixed;
-  right: 20px;
-  bottom: 84px;
-  padding: 7px 14px;
-  border-radius: 999px;
-  background: var(--heading);
-  color: #fff;
-  font-size: 13px;
-  letter-spacing: 1px;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity .25s, transform .25s;
-  pointer-events: none;
-  z-index: 20;
-}
-/* JS 往里写了文字之后，:not(:empty) 就命中了，标签自动浮现 */
-.section-indicator:not(:empty) { opacity: 1; transform: none; }
-
-/* 返回顶部按钮。默认隐藏，滚过一屏由 JS 加上 is-visible 才出现。 */
-.to-top {
-  position: fixed;
-  right: 20px;
-  bottom: 24px;
-  width: 46px;
-  height: 46px;
-  border: 1px solid var(--gold);
-  border-radius: 50%;
-  background: #fff;
-  color: var(--heading);
-  font-size: 20px;
-  line-height: 1;
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity .25s, transform .25s, background .2s;
-  pointer-events: none;
-  z-index: 20;
-}
-.to-top.is-visible { opacity: 1; transform: none; pointer-events: auto; }
-.to-top:hover { background: var(--heading-wash); }
-
-/* 让锚点跳转和"返回顶部"都平滑滚动。
-   prefers-reduced-motion 是系统里"减少动态效果"的设置，要尊重它。 */
-@media (prefers-reduced-motion: no-preference) {
-  html { scroll-behavior: smooth; }
-}
-
-@media (max-width: 640px) {
-  .section-indicator { right: 12px; bottom: 74px; font-size: 12px; }
-  .to-top { right: 12px; bottom: 16px; width: 42px; height: 42px; }
-}
-
-/* 第 04 课 TODO 03：顶部阅读进度条。
-   固定在页面最上沿，宽度由 JS 按滚动比例设置。
-   初始 width:0，所以不写 JS 时它存在但看不见。 */
-.reading-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 3px;
-  width: 0;
-  background: linear-gradient(90deg, var(--gold), var(--heading));
-  z-index: 30;
-  transition: width .08s linear;
-}
-
-/* 第 04 课「已写好的部分」：栏目进入视口时淡入上移（IntersectionObserver 加上 is-visible 类）。
-   默认往下偏移 24px 且半透明；JS 给它加上 is-visible 才归位。
-   注意这里**不能**写成一开始就 display:none——那样没写 JS 的人
-   会看到一个空白页面，页面就彻底不可用了。半透明至少还看得见。 */
-.section, .hero {
-  opacity: .28;
-  transform: translateY(24px);
-  transition: opacity .55s ease, transform .55s ease;
-}
-.section.is-visible, .hero.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-/* 系统开了"减少动态效果"时，一切照常显示，不做动画 */
-@media (prefers-reduced-motion: reduce) {
-  .section, .hero { opacity: 1; transform: none; transition: none; }
-  .reading-progress { transition: none; }
-}
-
-/* ---------- 第 5 课新增：筛选与排序工具条 ---------- */
-.works-toolbar {
+/* ------------------------------------------------------------
+   4. 正文分区：白底、无边框，靠留白分层
+   ------------------------------------------------------------ */
+main { counter-reset: sec; }
+.section { padding: 72px 0; }
+.section-heading { margin-bottom: 38px; }
+/* 章节标题 = 等宽编号 + 标题 + 延伸细线，形成编辑感 */
+.section-heading h2 {
+  counter-increment: sec;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  margin: 18px 0 22px;
+  gap: 16px;
+  font-size: var(--h2);
+  font-weight: 600;
+  color: var(--ink);
 }
+.section-heading h2::before {
+  content: counter(sec, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: .1em;
+  color: var(--mint-deep);
+}
+.section-heading h2::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+.section-content { counter-reset: skill; }
+
+/* 教育经历 */
+.experience-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; flex-wrap: wrap; }
+.experience-heading strong { font-size: 18px; font-weight: 600; color: var(--ink); }
+.experience-heading time {
+  flex-shrink: 0;
+  padding: 5px 13px;
+  border-radius: 999px;
+  background: var(--paper-2);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+.experience-detail { margin-top: 16px; max-width: 880px; font-size: 16.5px; line-height: 1.9; }
+
+/* 项目经历：卡片化，左侧一根强调色短棒 */
+.research-item {
+  position: relative;
+  padding: 26px 30px 26px 32px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+  transition: border-color .22s, transform .22s, box-shadow .22s;
+}
+.research-item + .research-item { margin-top: 16px; }
+.research-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 24px; bottom: 24px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--line-2);
+  transition: background .22s;
+}
+.research-item:hover { border-color: var(--line-2); transform: translateX(3px); box-shadow: 0 14px 34px -20px rgba(14, 27, 25, .5); }
+.research-item:hover::before { background: var(--mint); }
+.research-item h3 { font-size: 19px; font-weight: 600; color: var(--ink); }
+.research-item time {
+  display: inline-block;
+  margin-right: 12px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--mint-wash);
+  color: var(--mint-deep);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+.research-item p { margin-top: 12px; font-size: 16px; line-height: 1.85; }
+.research-item p strong { color: var(--ink); }
+
+/* 技能 / 求职意向：自动适配列数，条目增减不会出现"孤行" */
+.skills-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+  gap: 18px;
+}
+.skills-list li {
+  counter-increment: skill;
+  padding: 22px 24px;
+  border-radius: var(--radius);
+  background: var(--paper-2);
+  font-size: 15.5px;
+  line-height: 1.8;
+  transition: background .2s;
+}
+.skills-list li:hover { background: var(--mint-wash); }
+.skills-list li::before {
+  content: counter(skill, decimal-leading-zero);
+  display: block;
+  margin-bottom: 10px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: .12em;
+  /* 用浅灰而不是强调色：章节标题的编号才是薄荷色，
+     卡片编号退到背景层，两级编号不会互相打架 */
+  color: var(--faint);
+}
+.skills-list strong { display: block; margin-bottom: 8px; font-size: 16.5px; font-weight: 600; color: var(--ink); }
+
+.works-notice { max-width: 660px; margin-top: 14px; font-size: 14px; line-height: 1.75; color: var(--muted); }
+
+
+/* ------------------------------------------------------------
+   5. 作品展示：浅灰底分区 + 卡片网格
+   ------------------------------------------------------------ */
+#portfolio { background: var(--paper-2); }
+
+.works-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 26px 0 26px; }
 .works-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .works-tags button,
 .works-sort {
-  padding: 7px 14px;
-  border: 1px solid #ded8cb;
+  padding: 8px 16px;
+  border: 1px solid var(--line-2);
   border-radius: 999px;
-  background: #fff;
-  color: #5c5a52;
+  background: var(--paper);
+  color: var(--text);
   font: inherit;
-  font-size: 14px;
+  font-size: 13.5px;
   cursor: pointer;
   transition: border-color .18s, background .18s, color .18s;
 }
 .works-tags button:hover,
-.works-sort:hover { border-color: #b8a27d; }
-/* 选中的标签用主色填充，一眼能看出"现在在筛什么" */
-.works-tags button[aria-pressed="true"] {
-  border-color: #254a40;
-  background: #254a40;
-  color: #fff;
-}
-.works-sort { margin-left: auto; }
+.works-sort:hover { border-color: var(--mint); color: var(--mint-deep); }
+/* 选中的标签用墨色填充，一眼看出正在筛什么（aria-pressed 由 JS 设置） */
+.works-tags button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: #fff; }
+.works-sort { margin-left: auto; font-family: var(--mono); font-size: 13px; }
 
-/* 年份徽标：贴在封面右上角 */
-.work-card { position: relative; }
+.portfolio-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  /* 420px 是经过计算的：容器上限 1120px，420×2=840 能放下、420×3=1260 放不下
+     → 桌面上恒定 2 列。4 张作品正好排成 2×2，不会出现"最后一张孤零零" */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 24px;
+}
+.work-card { position: relative; min-width: 0; }
+.work-card > a {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: transform .28s cubic-bezier(.2, .7, .3, 1), box-shadow .28s, border-color .28s;
+}
+.work-card > a:hover {
+  text-decoration: none;
+  transform: translateY(-6px);
+  border-color: var(--line-2);
+  box-shadow: 0 26px 50px -26px rgba(14, 27, 25, .45);
+}
+.work-card > a:focus-visible { outline-offset: 4px; }
+
+.work-cover { overflow: hidden; background: var(--paper-3); }
+.work-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform .5s cubic-bezier(.2, .7, .3, 1);
+}
+.work-card > a:hover .work-cover img { transform: scale(1.03); }
+
+.work-copy { position: relative; padding: 20px 22px 22px; border-top: 1px solid var(--line); }
+.work-copy h3 { padding-right: 26px; font-size: 17.5px; font-weight: 600; color: var(--ink); }
+.work-copy p { margin-top: 8px; font-size: 14.5px; line-height: 1.75; color: var(--muted); }
+.work-copy::after {
+  content: '↗';
+  position: absolute;
+  top: 18px; right: 20px;
+  color: var(--mint-deep);
+  font-size: 18px;
+  transition: transform .25s;
+}
+.work-card > a:hover .work-copy::after { transform: translate(2px, -2px); }
+
+/* 年份徽标由 JS 生成，贴在封面右上角 */
 .work-year {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: rgba(37, 74, 64, .88);
-  color: #fff;
-  font-size: 13px;
-  letter-spacing: .04em;
+  top: 12px; right: 12px;
   z-index: 2;
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: rgba(14, 27, 25, .84);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .04em;
+}
+/* 筛选后没有作品时的提示，别让列表空着不说话 */
+.works-empty { grid-column: 1 / -1; padding: 48px 0; text-align: center; color: var(--faint); font-size: 15px; }
+
+
+/* ------------------------------------------------------------
+   6. 实践与成长：等宽小标题 + 编号条目
+   ------------------------------------------------------------ */
+.publication-group + .publication-group { margin-top: 46px; }
+.publication-group h3 {
+  margin-bottom: 18px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 400;
+  letter-spacing: .14em;
+  color: var(--mint-deep);
+}
+.references { counter-reset: ref; list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.references li {
+  counter-increment: ref;
+  position: relative;
+  padding-left: 38px;
+  font-size: 16px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.references li::before {
+  content: counter(ref, decimal-leading-zero);
+  position: absolute;
+  left: 0; top: .22em;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--faint);
+}
+.references strong { color: var(--ink); }
+
+
+/* ------------------------------------------------------------
+   7. 页脚：与首屏呼应，形成首尾深色书立
+   ------------------------------------------------------------ */
+footer { background: var(--ink); padding: 44px 0; }
+.footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.footer-inner a { color: rgba(255, 255, 255, .8); font-size: 14.5px; }
+.footer-inner a:hover { color: var(--mint); text-decoration: none; }
+
+
+/* ------------------------------------------------------------
+   8. 由 JavaScript 控制的四个视觉元素
+   ------------------------------------------------------------ */
+
+/* 当前栏目指示器（右下角胶囊）。默认透明，JS 写入文字后自动浮现 */
+.section-indicator {
+  position: fixed;
+  right: 22px;
+  bottom: 86px;
+  z-index: 30;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(14, 27, 25, .9);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .06em;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .25s, transform .25s;
+  pointer-events: none;
+}
+.section-indicator:not(:empty) { opacity: 1; transform: none; }
+
+/* 返回顶部按钮。滚过一屏由 JS 加 is-visible 才出现 */
+.to-top {
+  position: fixed;
+  right: 22px;
+  bottom: 24px;
+  z-index: 30;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--line-2);
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .25s, transform .25s, background .2s, color .2s, border-color .2s;
+  pointer-events: none;
+  box-shadow: 0 10px 26px -14px rgba(14, 27, 25, .55);
+}
+.to-top.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+.to-top:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* 顶部阅读进度条。初始 width:0，所以不写 JS 时它存在但看不见 */
+.reading-progress {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 50;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--mint), var(--ink));
+  transition: width .08s linear;
 }
 
-/* 没有作品时的提示，不要让列表空着什么都不说 */
-.works-empty {
-  grid-column: 1 / -1;
-  padding: 40px 0;
-  text-align: center;
-  color: #8a857a;
+/* 栏目进入视口时淡入上移（IntersectionObserver 加 is-visible）。
+   注意：这里**不能**用 display:none —— 没跑 JS 的人会看到空白页。
+   半透明至少还看得见内容。 */
+.section, .hero {
+  opacity: .28;
+  transform: translateY(22px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.section.is-visible, .hero.is-visible { opacity: 1; transform: none; }
+
+
+/* ------------------------------------------------------------
+   9. 响应式：只改布局，正文全部直接可见，不做折叠
+   ------------------------------------------------------------ */
+@media (max-width: 1000px) {
+  .container { width: min(1120px, 100% - 48px); }
+  nav { gap: 0; }
+  nav a { padding: 6px 10px; font-size: 13.5px; }
+  .hero-top { gap: 32px; }
+  .hero-visual figure { width: 158px; height: 158px; }
+  .profile-details { grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: 18px; padding: 24px 22px; }
+  .section { padding: 68px 0; }
+}
+
+@media (max-width: 820px) {
+  /* 头像移到姓名上方，避免和名字抢横向空间 */
+  .hero-top { flex-direction: column-reverse; align-items: flex-start; gap: 30px; }
+  .hero-visual figure { width: 132px; height: 132px; }
+  .hero { padding-top: 56px; }
+  .research-direction { margin-top: 34px; }
+  .portfolio-list { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 640px) {
+  :root { --body: 16px; --h2: 24px; }
+  html { scroll-padding-top: 116px; }
+  .container { width: min(1120px, 100% - 36px); }
+
+  .header-inner { display: block; min-height: 0; padding: 9px 0 8px; }
+  .brand { display: block; font-size: 16px; margin-bottom: 6px; }
+  /* 手机上 7 个导航项放不进一行，折成两行但压紧高度，
+     让吸顶栏总高控制在 ~78px 以内，不侵占阅读区域 */
+  nav { justify-content: flex-start; gap: 1px; }
+  nav a { padding: 4px 8px; font-size: 12px; }
+
+  .hero { padding-top: 44px; }
+  .hero-role { font-size: 15.5px; gap: 10px; }
+  .hero-role::before { flex-basis: 20px; width: 20px; }
+  .hero-school { font-size: 14px; }
+  .research-direction p { font-size: 15.5px; line-height: 1.85; }
+
+  /* 手机上缩小"骑跨"幅度，避免压到下一块正文 */
+  .profile-details { margin-top: 40px; margin-bottom: -40px; padding: 20px 18px; gap: 16px; grid-template-columns: 1fr 1fr; }
+  .profile-details p { font-size: 14px; }
+
+  .section { padding: 54px 0; }
+  .section-heading { margin-bottom: 26px; }
+  .section-heading h2 { gap: 12px; }
+  .section-heading h2::before { font-size: 12px; }
+
+  .experience-heading { display: block; }
+  .experience-heading time { display: inline-block; margin-top: 8px; }
+  .experience-detail { font-size: 15.5px; }
+
+  .research-item { padding: 20px 20px 20px 24px; }
+  .research-item h3 { font-size: 17px; }
+  .research-item time { display: block; width: fit-content; margin: 0 0 8px; }
+  .research-item p { font-size: 15.5px; }
+
+  .skills-list { grid-template-columns: 1fr; gap: 14px; }
+  .skills-list li { padding: 18px 20px; }
+
+  .works-toolbar { margin: 20px 0; }
   .works-sort { margin-left: 0; }
+  .work-copy { padding: 16px 18px 18px; }
+  .work-copy h3 { font-size: 16.5px; }
+
+  .references li { padding-left: 30px; font-size: 15.5px; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
+
+  .section-indicator { right: 12px; bottom: 76px; font-size: 11.5px; }
+  .to-top { right: 12px; bottom: 16px; width: 42px; height: 42px; }
+}
+
+/* 尊重系统"减少动态效果"：关掉所有动画，内容照常显示 */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+  .section, .hero { opacity: 1; transform: none; }
+  .research-item:hover, .work-card > a:hover, .work-card > a:hover .work-cover img { transform: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+
+/* ------------------------------------------------------------
+   10. 打印：导出 PDF 时自动变成一份干净的纸质简历
+   ------------------------------------------------------------
+   ⚠️ 关键：深色首屏上的文字是白色，白纸上会彻底看不见。
+      凡是深色底上的浅色文字（尤其是 <strong>），打印时都必须改回深色。
+   ------------------------------------------------------------ */
+@media print {
+  /* 交互元素在纸上没有意义，全部隐藏 */
+  .site-header, .skip-link, .to-top, .section-indicator, .reading-progress, footer, .works-toolbar { display: none !important; }
+
+  body { background: #fff; color: #000; font-size: 10pt; line-height: 1.55; }
+  .container { width: 100%; max-width: none; }
+
+  /* —— 首屏：深色底完全去掉，还原成白底黑字 —— */
+  .hero { background: none !important; color: #000; padding: 0 0 8pt; }
+  h1 { color: #000; font-size: 24pt; letter-spacing: .04em; }
+  .hero-role { color: #000; font-size: 11pt; margin-top: 8pt; }
+  .hero-role::before { display: none; }
+  .hero-school { color: #444; font-size: 9pt; }
+  .hero-visual { display: none; }
+  .research-direction { margin-top: 12pt; max-width: none; }
+  .research-direction > span, .research-direction .eyebrow { color: #000; margin-bottom: 5pt; }
+  .research-direction p { color: #222; font-size: 10pt; }
+  /* ↓ 这一行不能漏：正文的 <strong> 在网页上是白色 */
+  .research-direction strong { color: #000; }
+
+  /* —— 资料卡：去掉阴影与圆角，变成一行规整的字段 —— */
+  .profile-details { margin: 0 0 10pt; padding: 0; border-radius: 0; box-shadow: none; gap: 0 10pt; grid-template-columns: repeat(4, 1fr); }
+  .profile-details > div { padding-top: 5pt; border-top: 1px solid #000; }
+  .profile-details > div > span { color: #444; font-size: 7.5pt; margin-bottom: 3pt; }
+  .profile-details p { color: #000; font-size: 8.5pt; }
+
+  /* —— 分区：压缩留白，但保留章节编号与细线 —— */
+  .section { padding: 10pt 0; }
+  #portfolio { background: none !important; }
+  .section-heading { margin-bottom: 9pt; }
+  .section-heading h2 { font-size: 13pt; color: #000; gap: 8pt; }
+  .section-heading h2::before { color: #000; font-size: 9pt; }
+  .section-heading h2::after { background: #bbb; }
+  .works-notice { display: none; }
+
+  /* —— 教育经历 / 项目经历：去掉卡片外壳，只留内容 —— */
+  .experience-heading strong { font-size: 10pt; color: #000; }
+  .experience-heading time { background: none; color: #444; padding: 0; font-size: 8.5pt; }
+  .experience-detail { font-size: 9.5pt; }
+
+  .research-item {
+    border: 1px solid #ddd;
+    padding: 7pt 9pt;
+    break-inside: avoid;
+    transform: none !important;
+    box-shadow: none !important;
+    margin-top: 7pt;
+  }
+  /* 防止卡片被分页线切开 */
+  .experience-item, .skills-list li, .work-card, .publication-group { break-inside: avoid; }
+  .research-item::before { display: none; }
+  .research-item h3 { font-size: 10.5pt; color: #000; }
+  .research-item time { background: none; color: #000; padding: 0; font-size: 8.5pt; }
+  .research-item p { font-size: 9pt; margin-top: 4pt; line-height: 1.5; }
+  .research-item p strong { color: #000; }
+
+  /* —— 技能：三列压紧 —— */
+  .skills-list { grid-template-columns: repeat(3, 1fr); gap: 6pt; }
+  .skills-list li { background: none !important; border: 1px solid #ccc; padding: 6pt 7pt; font-size: 8.5pt; line-height: 1.5; }
+  .skills-list li::before { color: #000; margin-bottom: 4pt; font-size: 7.5pt; }
+  .skills-list strong { font-size: 9.5pt; color: #000; margin-bottom: 3pt; }
+
+  /* —— 作品：四张缩略图排一行，避免占掉整页 —— */
+  .portfolio-list { grid-template-columns: repeat(4, 1fr); gap: 6pt; }
+  .work-card > a { border: 1px solid #ccc; transform: none !important; box-shadow: none !important; }
+  .work-cover { background: none; }
+  .work-cover img { transform: none !important; }
+  .work-year { top: 4pt; right: 4pt; padding: 1pt 4pt; font-size: 7pt; background: #000; }
+  .work-copy { padding: 5pt 6pt 6pt; border-top: 1px solid #ddd; }
+  .work-copy h3 { font-size: 8.5pt; color: #000; padding-right: 0; }
+  .work-copy p { font-size: 7.5pt; color: #444; margin-top: 2pt; line-height: 1.4; }
+  .work-copy::after { display: none; }
+
+  /* —— 实践与成长 —— */
+  .publication-group + .publication-group { margin-top: 10pt; }
+  .publication-group h3 { color: #000; margin-bottom: 6pt; font-size: 8.5pt; }
+  .references { gap: 4pt; }
+  .references li { padding-left: 20pt; font-size: 9pt; line-height: 1.5; }
+  .references li::before { color: #000; font-size: 8pt; }
+  .references strong { color: #000; }
+
+  a { color: #000; text-decoration: none; }
+  /* 务必关掉进场动画的初始半透明，否则会印出一片灰字 */
+  .section, .hero { opacity: 1 !important; transform: none !important; }
 }
