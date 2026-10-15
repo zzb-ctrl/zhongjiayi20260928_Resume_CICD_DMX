@@ -9,14 +9,14 @@
 //   year         年份，用来排序和显示右上角徽标
 //   tags         标签数组，用来筛选。一个作品可以有多个标签
 //
-// 说明：下面 4 条的封面暂时是 assets/work-*.svg 的示意封面，
+// 说明：下面 4 条的封面是 work-*.svg 的示意封面（文件位于仓库根目录），
 // 想让卡片更真实，就把自己实验报告里的截图存成同名文件覆盖掉，
 // 或者改这里的 image 路径指向新图（建议尺寸 1200×800，比例 3:2）。
 const works = [
   {
     title: '课程作业 Deadline 管理清单 · Web App',
     description: '从一句需求描述到可运行应用，支持课程作业与截止日期的增删改查。',
-    image: 'assets/work-deadline.svg',
+    image: 'work-deadline.svg',
     url: 'https://github.com/zzb-ctrl',
     year: 2026,
     tags: ['前端', 'AI 辅助开发'],
@@ -24,7 +24,7 @@ const works = [
   {
     title: 'AI 健身教练智能体',
     description: '面向零运动基础女生的智能体角色设计与提示词迭代，输出训练与饮食建议。',
-    image: 'assets/work-fitness-agent.svg',
+    image: 'work-fitness-agent.svg',
     url: 'https://github.com/zzb-ctrl',
     year: 2026,
     tags: ['智能体'],
@@ -32,7 +32,7 @@ const works = [
   {
     title: 'wordbook CLI · AGENTS 规则文件',
     description: '为命令行单词本工具编写完整 AGENTS 规则，约束 AI 编程助手的工程行为。',
-    image: 'assets/work-wordbook.svg',
+    image: 'work-wordbook.svg',
     url: 'https://github.com/zzb-ctrl',
     year: 2026,
     tags: ['工程规范', 'AI 辅助开发'],
@@ -40,7 +40,7 @@ const works = [
   {
     title: '个人简历 / 作品集网站',
     description: '数据与视图分离架构 + GitHub Actions 自动部署，界面视觉已独立重写。',
-    image: 'assets/work-resume-site.svg',
+    image: 'work-resume-site.svg',
     url: 'https://zzb-ctrl.github.io/zhongjiayi20260928_Resume_CICD_DMX/',
     year: 2026,
     tags: ['前端', 'CI/CD'],
