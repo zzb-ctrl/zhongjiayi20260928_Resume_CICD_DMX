@@ -735,6 +735,115 @@ footer::before {
 
 
 /* ------------------------------------------------------------
+   8-b. 新增内容块：个人标签 / 兴趣爱好 / 联系方式
+   ------------------------------------------------------------ */
+
+/* 个人标签：姓名下方一行小胶囊。每颗左边一个彩色圆点，
+   按紫 → 珊瑚 → 柠檬 → 薄荷轮转，呼应全站的配色节奏。 */
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.hero-tags li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .22);
+  background: rgba(255, 255, 255, .08);
+  color: rgba(255, 255, 255, .9);
+  font-size: 13.5px;
+}
+.hero-tags li::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--violet);
+}
+.hero-tags li:nth-child(2)::before { background: var(--coral); }
+.hero-tags li:nth-child(3)::before { background: var(--sun); }
+.hero-tags li:nth-child(4)::before { background: var(--mint); }
+
+/* 兴趣爱好：同样落在深色首屏上，所以也用胶囊；
+   但改成实心淡底、不带圆点，跟上面那排「个人标签」区分开。 */
+.hero-interests { margin-top: 34px; }
+.hero-interests > span {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 4px 13px;
+  border-radius: 999px;
+  background: var(--mint);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: .16em;
+}
+.hero-interests .chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hero-interests li {
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .14);
+  color: #fff;
+  font-size: 13.5px;
+}
+
+/* 小节说明文字（作品展示与新板块共用同一套观感） */
+.section-note {
+  max-width: 760px;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* 联系方式：三格彩色卡片。视觉语言与首屏资料卡一致，首尾呼应。 */
+.contact-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 22px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.contact-list li {
+  padding: 22px 24px;
+  border-radius: var(--radius);
+  border-top: 3px solid var(--line-2);
+  background: var(--paper-2);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.contact-list li:nth-child(1) { border-top-color: var(--violet); }
+.contact-list li:nth-child(2) { border-top-color: var(--coral); }
+.contact-list li:nth-child(3) { border-top-color: var(--mint); }
+.contact-list li:nth-child(4) { border-top-color: var(--sun); }
+.contact-list li:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); }
+.contact-label {
+  display: block;
+  margin-bottom: 7px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: .12em;
+  color: var(--faint);
+}
+.contact-list p { font-size: 15px; font-weight: 500; line-height: 1.6; color: var(--ink); }
+.contact-list a { overflow-wrap: anywhere; }
+
+
+/* ------------------------------------------------------------
    9. 响应式：只改布局，正文全部直接可见，不做折叠
    ------------------------------------------------------------ */
 @media (max-width: 1000px) {
@@ -772,6 +881,13 @@ footer::before {
   .hero-role { font-size: 15px; padding: 7px 15px; }
   .hero-role::before { width: 7px; height: 7px; }
   .hero-school { font-size: 14px; }
+  .hero-tags { gap: 8px; margin-top: 16px; }
+  .hero-tags li, .hero-interests li { padding: 4px 11px; font-size: 12.5px; }
+  .hero-interests { margin-top: 26px; }
+  .hero-interests > span { margin-bottom: 11px; }
+  .section-note { font-size: 14.5px; }
+  .contact-list { grid-template-columns: 1fr; gap: 14px; }
+  .contact-list li { padding: 18px 20px; }
   .research-direction p { font-size: 15.5px; line-height: 1.85; }
 
   /* 手机上缩小"骑跨"幅度，避免压到下一块正文 */
@@ -815,7 +931,7 @@ footer::before {
   *, *::before, *::after { transition: none !important; animation: none !important; }
   .section, .hero { opacity: 1; transform: none; }
   .research-item:hover, .work-card > a:hover, .work-card > a:hover .work-cover img,
-  .skills-list li:hover, .to-top.is-visible:hover { transform: none; }
+  .skills-list li:hover, .contact-list li:hover, .to-top.is-visible:hover { transform: none; }
   .work-card > a:hover .work-copy::after { transform: none; }
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -970,6 +1086,31 @@ footer::before {
     font-size: 8pt;
   }
   .references strong { color: #000; }
+
+  /* —— 个人标签 / 兴趣爱好：胶囊还原成描边小标签 —— */
+  .hero-tags, .hero-interests { margin-top: 6pt; }
+  .hero-tags li, .hero-interests li {
+    padding: 0 5pt;
+    border: 1px solid #bbb;
+    background: none !important;
+    color: #000;
+    font-size: 8pt;
+  }
+  .hero-tags li::before { background: #000 !important; }
+  .hero-interests > span { margin-bottom: 3pt; padding: 0; background: none; color: #000; }
+  .section-note { display: none; }
+
+  /* —— 联系方式：压成三列无底色 —— */
+  .contact-list { grid-template-columns: repeat(3, 1fr); gap: 0 10pt; }
+  .contact-list li {
+    padding: 5pt 0 0;
+    border-radius: 0;
+    background: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  .contact-label { margin-bottom: 3pt; color: #444; font-size: 7.5pt; }
+  .contact-list p { color: #000; font-size: 8.5pt; }
 
   a { color: #000; text-decoration: none; }
   /* 务必关掉进场动画的初始半透明，否则会印出一片灰字 */

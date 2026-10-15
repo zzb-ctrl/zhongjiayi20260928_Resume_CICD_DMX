@@ -41,6 +41,7 @@
                 <a href="#skills">专业技能</a>
                 <a href="#portfolio">作品展示</a>
                 <a href="#records">实践与成长</a>
+                <a href="#contact">联系方式</a>
             </nav>
         </div>
     </header>
@@ -54,6 +55,13 @@
                         <h1>钟家怡</h1>
                         <p class="hero-role">前端开发 / 大模型应用开发方向</p>
                         <p class="hero-school">广东科学技术职业学院 · 人工智能技术应用（大模型应用开发方向）2025 级</p>
+                        <!-- 个人标签：一行小胶囊，让人三秒看清方向。想改文字只动 <li> 里的字 -->
+                        <ul class="hero-tags" aria-label="个人标签">
+                            <li>前端开发</li>
+                            <li>大模型应用</li>
+                            <li>智能体设计</li>
+                            <li>CI/CD 自动化</li>
+                        </ul>
                     </div>
                     <div class="hero-visual">
                         <figure>
@@ -75,6 +83,18 @@
                     </p>
                 </div>
 
+                <!-- 兴趣爱好：下面 4 个是我按常见情况先填的示例，
+                     请替换成你自己的真实爱好——假爱好在面试里一聊就露馅 -->
+                <div class="hero-interests">
+                    <span>兴趣爱好</span>
+                    <ul class="chip-list">
+                        <li>阅读</li>
+                        <li>跑步</li>
+                        <li>摄影</li>
+                        <li>听音乐</li>
+                    </ul>
+                </div>
+
                 <div class="profile-details">
                     <div>
                         <span>求职意向</span>
@@ -85,9 +105,10 @@
                         <p>珠海 · 广州 · 深圳</p>
                     </div>
                     <div>
-                        <!-- TODO 家怡：这一格还没填！换成你的真实邮箱，例：zhongjiayi@qq.com -->
+                        <!-- TODO 家怡：这格现在填的是「123456@qq.com」，
+                             它看起来像示例邮箱，投简历前请换成你真实在用的邮箱 -->
                         <span>公开邮箱</span>
-                        <p>请替换为你的真实邮箱</p>
+                        <p><a href="mailto:123456@qq.com">123456@qq.com</a></p>
                     </div>
                     <div>
                         <span>GitHub</span>
@@ -270,6 +291,35 @@
                 </div>
             </div>
         </section>
+
+        <!-- ==========【联系方式】新增板块 ==========
+             想加微信：把下面任意一个 <li> 整段复制一份，标签改成「微信」即可 -->
+        <section class="section" id="contact">
+            <div class="container">
+                <header class="section-heading">
+                    <h2>联系方式</h2>
+                    <p class="section-note">
+                        欢迎通过下面任意一种方式联系我。简历源码与全部作品都托管在 GitHub 上，随时可以查看。
+                    </p>
+                </header>
+                <div class="section-content">
+                    <ul class="contact-list">
+                        <li>
+                            <span class="contact-label">公开邮箱</span>
+                            <p><a href="mailto:123456@qq.com">123456@qq.com</a></p>
+                        </li>
+                        <li>
+                            <span class="contact-label">GitHub</span>
+                            <p><a href="https://github.com/zzb-ctrl" target="_blank" rel="noopener noreferrer">github.com/zzb-ctrl</a></p>
+                        </li>
+                        <li>
+                            <span class="contact-label">线上作品集</span>
+                            <p><a href="https://zzb-ctrl.github.io/zhongjiayi20260928_Resume_CICD_DMX/" target="_blank" rel="noopener noreferrer">zzb-ctrl.github.io / 个人作品集</a></p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- JS 交互 DOM 节点，id 不可删除，app.js 依赖 -->
@@ -281,6 +331,7 @@
         <div class="container footer-inner">
             <a href="#about">回到顶部</a>
             <a href="#portfolio">作品展示</a>
+            <a href="#contact">联系方式</a>
         </div>
     </footer>
 </body>
