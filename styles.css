@@ -235,22 +235,37 @@ h1 {
 .hero-school { margin-top: 14px; color: rgba(255, 255, 255, .66); font-size: 15px; line-height: 1.7; }
 
 .hero-visual { flex-shrink: 0; }
-/* 头像：外圈是一道彩虹锥形渐变环，内圈裁成圆的照片 */
+/* 头像：外面套一道彩虹环，环心是透明的 —— 透明底头像像直接浮在深色首屏上 */
 .hero-visual figure {
+  position: relative;
   width: 196px;
   height: 196px;
   padding: 5px;
   border-radius: 50%;
-  background: conic-gradient(from 140deg, var(--sun), var(--coral), var(--violet), var(--mint), var(--sun));
   box-shadow: 0 20px 44px -16px rgba(0, 0, 0, .6);
 }
+/* 彩虹环用伪元素画，靠 mask 只在 5px 边框上上色、把环心掏空，
+   这样首屏的彩色光晕能从环里透出来，不会出现一块突兀的深色圆盘 */
+.hero-visual figure::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 5px solid transparent;
+  background: conic-gradient(from 140deg, var(--sun), var(--coral), var(--violet), var(--mint), var(--sun)) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+          mask-composite: exclude;
+}
 .hero-visual img {
+  position: relative;
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
-  background: var(--ink-2);
+  background: none;
 }
 
 .research-direction { margin-top: 46px; max-width: 850px; }
